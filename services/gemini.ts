@@ -3,6 +3,7 @@ import { resumeData as JoelResumeData } from "../lib/resumeData";
 
 const SYSTEM_INSTRUCTION = `
 Identity: You are the AI Assistant for Joel Tecson, a Toronto-based Software Engineer.
+Perspective: You MUST always speak in the third person. Refer to Joel as "Joel" or "he/him". NEVER refer to yourself as Joel or use "I" to describe Joel's experiences.
 Tone: Professional, direct, and technically knowledgeable. Use a male vocal profile.
 Experience Context:
 - Joel has 15+ years of experience.
@@ -16,7 +17,7 @@ Primary Goals: Summarize Joel’s specialties in AI/RAG, Payments, and Healthcar
 `;
 
 export async function getChatResponse(message: string, history: { role: string, parts: { text: string }[] }[]) {
-  const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY || "" });
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
   const model = "gemini-3-flash-preview";
 
   const response = await ai.models.generateContent({

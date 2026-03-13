@@ -15,7 +15,7 @@ export const AIAgent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<'text' | 'voice'>('text');
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'bot', text: "Hello! I&apos;m Joel&apos;s AI assistant. How can I help you today?" }
+    { role: 'bot', text: "Hello! I'm Joel's AI assistant. How can I help you today?" }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -110,7 +110,7 @@ export const AIAgent = () => {
             initial={{ y: 100, opacity: 0, scale: 0.9 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 100, opacity: 0, scale: 0.9 }}
-            className="w-96 h-[500px] glass-panel flex flex-col overflow-hidden shadow-2xl"
+            className="w-96 h-[500px] bg-brand-dark border border-white/10 flex flex-col overflow-hidden shadow-2xl rounded-3xl"
           >
             {/* Header */}
             <div className="p-4 bg-brand-surface border-b border-white/10 flex items-center justify-between">
@@ -139,13 +139,13 @@ export const AIAgent = () => {
             </div>
 
             {/* Chat Area */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide">
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide bg-brand-dark/50">
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${
+                  <div className={`max-w-[80%] p-3 rounded-2xl text-sm shadow-sm ${
                     m.role === 'user' 
                       ? 'bg-brand-accent text-white rounded-tr-none' 
-                      : 'bg-brand-surface border border-white/5 rounded-tl-none'
+                      : 'bg-brand-surface border border-white/5 rounded-tl-none text-brand-text'
                   }`}>
                     {m.text}
                   </div>
@@ -164,7 +164,7 @@ export const AIAgent = () => {
 
             {/* Voice Mode Overlay */}
             {mode === 'voice' && (
-              <div className="absolute inset-0 top-16 bg-brand-dark/95 flex flex-col items-center justify-center p-8 text-center space-y-6">
+              <div className="absolute inset-0 top-16 bg-brand-dark flex flex-col items-center justify-center p-8 text-center space-y-6 z-20">
                 <div className="relative">
                   <div className="absolute inset-0 bg-brand-accent/20 rounded-full animate-ping" />
                   <div className="w-24 h-24 bg-brand-accent rounded-full flex items-center justify-center text-white relative z-10">
@@ -188,7 +188,7 @@ export const AIAgent = () => {
 
             {/* Input */}
             {mode === 'text' && (
-              <div className="p-4 border-t border-white/10 bg-brand-surface/30">
+              <div className="p-4 border-t border-white/10 bg-brand-surface">
                 <div className="relative">
                   <input
                     type="text"
@@ -196,7 +196,7 @@ export const AIAgent = () => {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                     placeholder="Ask about Joel's experience..."
-                    className="w-full bg-brand-dark border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-brand-accent transition-colors"
+                    className="w-full bg-brand-dark border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm focus:outline-none focus:border-brand-accent transition-colors text-brand-text"
                   />
                   <button 
                     onClick={handleSend}
