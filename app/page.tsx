@@ -3,7 +3,7 @@
 import Hero from '@/components/Hero';
 import TechStack from '@/components/TechStack';
 import SkillsExperience from '@/components/SkillsExperience';
-import ChatWidget from '@/components/ChatWidget';
+import { AIAgent } from '@/components/AIAgent';
 
 export default function Home() {
   return (
@@ -38,7 +38,7 @@ export default function Home() {
         </p>
       </footer>
 
-      <ChatWidget />
+      <AIAgent />
     </main>
   );
 }
