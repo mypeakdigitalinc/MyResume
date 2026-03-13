@@ -1,0 +1,7 @@
+{
+  "name": "Joel Tecson v4",
+  "description": "Professional portfolio of Joel Tecson, a Senior Software Engineer specializing in Payment Systems, AI/RAG, and Healthcare.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
