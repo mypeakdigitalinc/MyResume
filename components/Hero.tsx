@@ -48,6 +48,17 @@ export default function Hero() {
             >
               Talk to AI Agent
             </button>
+            <div className="flex items-center gap-3 px-4 py-3 bg-brand-surface/30 border border-white/5 rounded-xl backdrop-blur-sm">
+              <div className="w-8 h-8 bg-brand-accent/20 rounded-full flex items-center justify-center text-brand-accent">
+                <Phone size={16} />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-brand-text/40">Mobile AI Assistant</span>
+                <a href="tel:+16475603039" className="text-sm font-bold text-white hover:text-brand-accent transition-colors">
+                  +1 (647) 560-3039
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Integrated Contact Section */}

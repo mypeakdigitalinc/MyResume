@@ -5,6 +5,7 @@ export const resumeData = {
     location: "Toronto, Canada",
     email: "joel.tecson@gmail.com",
     phone: "+1 (647) 362-9721",
+    mobileAiAssistant: "+1 (647) 560-3039",
     linkedin: "https://linkedin.com/in/joeltecson",
     summary: "Senior software engineer and technical leader with over 15 years of experience designing and building enterprise software systems across web, desktop, mobile, and payment platforms. Deep expertise in payment processing technologies, POS integration, secure financial transaction systems, and enterprise architecture. Experienced in leading engineering teams, implementing DevSecOps pipelines, and building automated testing frameworks. Expert in AI integration using Google Vertex AI and OpenAI APIs.",
   },

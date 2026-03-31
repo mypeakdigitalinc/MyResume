@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageSquare, Mic, X, Send, ChevronDown, User, Bot, Volume2, VolumeX, MicOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { getChatResponse } from '../services/gemini';
+import { getChatResponseStream } from '../services/gemini';
 import { LiveVoiceService } from '../services/liveApi';
 
 interface Message {
@@ -15,7 +15,7 @@ export const AIAgent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<'text' | 'voice'>('text');
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'bot', text: "Hello! I'm Joel's AI assistant. How can I help you today?" }
+    { role: 'bot', text: "Hello! I'm Joel's AI assistant. How can I help you today? You can also reach me directly at +1 (647) 560-3039." }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -48,13 +48,29 @@ export const AIAgent = () => {
         role: m.role === 'user' ? 'user' : 'model',
         parts: [{ text: m.text }]
       }));
-      const response = await getChatResponse(userMsg, history);
-      setMessages(prev => [...prev, { role: 'bot', text: response || "I'm sorry, I couldn't process that." }]);
+      
+      const stream = await getChatResponseStream(userMsg, history);
+      
+      // Add an empty bot message that we'll fill with the stream
+      setMessages(prev => [...prev, { role: 'bot', text: '' }]);
+      setIsTyping(false);
+
+      let fullText = '';
+      for await (const chunk of stream) {
+        const chunkText = chunk.text;
+        if (chunkText) {
+          fullText += chunkText;
+          setMessages(prev => {
+            const newMessages = [...prev];
+            newMessages[newMessages.length - 1] = { role: 'bot', text: fullText };
+            return newMessages;
+          });
+        }
+      }
     } catch (error) {
       console.error(error);
-      setMessages(prev => [...prev, { role: 'bot', text: "Error connecting to AI service." }]);
-    } finally {
       setIsTyping(false);
+      setMessages(prev => [...prev, { role: 'bot', text: "Error connecting to AI service." }]);
     }
   };
 
@@ -175,6 +191,9 @@ export const AIAgent = () => {
                   <h4 className="text-xl font-bold">Live Voice Mode</h4>
                   <p className="text-brand-muted text-sm mt-2">
                     Speak naturally. I&apos;m listening to help you learn more about Joel&apos;s expertise.
+                  </p>
+                  <p className="text-[10px] text-brand-accent mt-4 uppercase tracking-widest font-bold">
+                    Also available via Phone: +1 (647) 560-3039
                   </p>
                 </div>
                 <button 

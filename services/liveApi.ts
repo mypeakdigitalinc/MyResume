@@ -16,7 +16,7 @@ Booking Protocol: When a user asks about hiring or collaborating, respond: "I ca
 
 export class LiveVoiceService {
   private ai: GoogleGenAI;
-  private session: any;
+  private sessionPromise: Promise<any> | null = null;
   private audioContext: AudioContext | null = null;
   private processor: ScriptProcessorNode | null = null;
   private source: MediaStreamAudioSourceNode | null = null;
@@ -30,8 +30,8 @@ export class LiveVoiceService {
   async connect(onMessage: (text: string) => void, onInterrupted: () => void) {
     this.audioContext = new AudioContext({ sampleRate: 16000 });
     
-    this.session = await this.ai.live.connect({
-      model: "gemini-2.5-flash-native-audio-preview-09-2025",
+    this.sessionPromise = this.ai.live.connect({
+      model: "gemini-3.1-flash-live-preview",
       config: {
         responseModalities: [Modality.AUDIO],
         speechConfig: {
@@ -64,6 +64,8 @@ export class LiveVoiceService {
         }
       }
     });
+
+    await this.sessionPromise;
   }
 
   private async startMic() {
@@ -76,8 +78,10 @@ export class LiveVoiceService {
       const pcmData = this.floatTo16BitPCM(inputData);
       const base64Data = this.arrayBufferToBase64(pcmData.buffer);
       
-      this.session.sendRealtimeInput({
-        media: { data: base64Data, mimeType: 'audio/pcm;rate=16000' }
+      this.sessionPromise?.then(session => {
+        session.sendRealtimeInput({
+          audio: { data: base64Data, mimeType: 'audio/pcm;rate=16000' }
+        });
       });
     };
 
@@ -153,7 +157,7 @@ export class LiveVoiceService {
 
   disconnect() {
     this.stopMic();
-    this.session?.close();
+    this.sessionPromise?.then(session => session.close());
     this.audioContext?.close();
   }
 }

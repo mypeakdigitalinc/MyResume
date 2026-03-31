@@ -16,11 +16,11 @@ Booking Protocol: When a user asks about hiring or collaborating, respond: "I ca
 Primary Goals: Summarize Joel’s specialties in AI/RAG, Payments, and Healthcare and facilitate appointment booking for projects or employment.
 `;
 
-export async function getChatResponse(message: string, history: { role: string, parts: { text: string }[] }[]) {
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+export async function getChatResponseStream(message: string, history: { role: string, parts: { text: string }[] }[]) {
+  const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY || "" });
   const model = "gemini-3-flash-preview";
 
-  const response = await ai.models.generateContent({
+  return await ai.models.generateContentStream({
     model,
     contents: [
       ...history,
@@ -30,6 +30,4 @@ export async function getChatResponse(message: string, history: { role: string, 
       systemInstruction: SYSTEM_INSTRUCTION,
     }
   });
-
-  return response.text;
 }
